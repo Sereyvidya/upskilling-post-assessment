@@ -13,4 +13,4 @@ Captured locally on October 2, 2026. All salon clients and messages are fictiona
 
 The representative workflow is `juniper-salon-v1`, run `01a0feb4-b308-7745-85e5-4176410761a9`. It intentionally remains RUNNING because it holds the salon's ongoing waitlist; individual openings reach filled, cancelled or unfilled states inside it. A RUNNING status is not an unfinished individual booking.
 
-The prototype and evidence are ready for review. The assessment's 3–5-slide PDF is a separate deliverable and is not included here yet.
+The five-slide [Juniper Salon presentation](../Juniper-Salon-Presentation.pdf) is included at the repository root alongside the prototype and evidence.

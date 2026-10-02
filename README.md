@@ -4,6 +4,10 @@ Juniper fills cancelled appointments through one exclusive offer at a time. Staf
 
 This is a **local assessment prototype using fictional clients and simulated messages**. It sends no SMS, changes no Square bookings, and has no authentication. Staff and client controls appear together so the complete process can be demonstrated on one laptop.
 
+## Presentation
+
+[Juniper Salon presentation](Juniper-Salon-Presentation.pdf) contains five standalone slides for Lena covering the problem, prototype behavior, simulated or excluded work, and a practical next step.
+
 ## Run locally
 
 Requirements: Node.js 20 or newer, npm, and Docker Desktop running. From the repository root:
