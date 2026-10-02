@@ -1,0 +1,80 @@
+Juniper Salon — customer discovery
+October 2, 2026, approximately 15:00–15:09 PDT; 18 customer-chat turns.
+Source: the assigned assessment customer role-play. Raw chat evidence is kept
+locally in evidence/discovery/ and excluded from the public repository.
+The assessment timer's actual start time was not independently verified.
+
+CURRENT PROCESS AND USERS
+Lena and Carla notice cancellations in Square, check a Google Sheet, text from
+the salon phone, track replies, and manually update the calendar. Waitlist
+clients have asked to receive earlier-appointment offers.
+The sheet contains name, mobile, service, stylist preference, and availability.
+
+PAIN AND CHANGED DECISION
+Two clients once expected the same Saturday haircut after accepting a group
+text; one left angry. Lena initially preferred broadcasting for speed, but
+after discussing this risk chose one exclusive offer at a time, advancing
+automatically. Use this final confirmed policy, not the earlier broadcast idea.
+
+CONFIRMED PROTOTYPE SCOPE
+Same-day openings; fictional clients; simulated texts; manual Square updates.
+No real SMS, real customer data, automatic calendar edits, or public deployment.
+
+BUSINESS RULES
+1. Filter by requested service fitting the opening's duration, stylist
+   preference, and availability; offer to earliest eligible waitlist entry.
+2. One exclusive 15-minute offer at a time. Advance automatically on decline
+   or no response. Decline/no response does not remove future eligibility.
+3. Explicit acceptance only. Reject expired or competing acceptances even if
+   no other client has accepted yet. Repeated replies must not create bookings.
+4. Questions or ambiguous replies need staff attention but do not reserve the
+   slot or extend the original deadline.
+5. Closing the page does not reset a delivered offer's deadline. Show the
+   current state when staff return.
+6. Delivery failures pause the search for Lena/Carla to retry, skip, or stop;
+   do not silently move on. Do not claim an unconfirmed offer is confirmed.
+7. STOP removes the client from future offers.
+8. Both staff members can stop an offer/search if the opening disappears,
+   the original client changes their mind, or the stylist is unavailable.
+9. Staff can record a phone booking, canceling the outstanding offer so it
+   cannot subsequently claim the slot.
+10. Acceptance holds the opening for that client; notify the client and front
+    desk with service, stylist, date, and time. Display awaiting staff
+    confirmation until staff have updated Square. Staff also handle moving
+    any existing later appointment in Square.
+11. Exhausted candidates -> unfilled, with staff notified. Appointment start
+    -> stop. No separate travel cutoff was agreed; staff can stop earlier.
+
+STAFF VIEW
+Current offer, original deadline, declines/timeouts, remaining candidates,
+final result, and clear staff-attention states. Notification history must
+distinguish simulated messages from messages actually sent.
+
+SUCCESS MEASURES
+Demonstrate automatic progression without watching the screen and prevention
+of competing acceptances. For a future trial, measure same-day fill rate and
+Carla's time spent chasing replies.
+Lena estimates 8–12 cancellations INSIDE 48 HOURS per week, around 3 refilled;
+this is not a measured same-day baseline. Staff-time baseline is unknown.
+Do not report prototype runs as real business improvements.
+
+UNRESOLVED / OUT OF SCOPE
+Offer timeout for openings beyond same day is undecided.
+No fixed travel-time cutoff, target uplift, or staff-time target was provided.
+Real SMS consent/delivery and Square integrations require work before use.
+Exact behavior for concurrent openings and resuming after a delivery retry was
+not specified; document any implementation assumptions rather than attributing
+them to Lena.
+
+IMPLEMENTATION HANDOFF (engineering choices, not customer quotations)
+Use a Temporal workflow for each opening, durable deadlines, response messages
+with offer identity, and serialized state transitions to prevent double claims.
+Expose an explicit accelerated demonstration mode without pretending its short
+timeouts are the production 15-minute policy. Preserve a workflow history and
+show rejection of stale replies. Capture final prototype evidence separately
+from the neutral setup screenshots.
+
+TRANSCRIPT NOTE
+Question 13 appears truncated in the actual chat after 'Also, are these c'.
+It is preserved verbatim; consent/eligibility was asked again in question 14.
+The access-token URL is intentionally absent from these saved artifacts.

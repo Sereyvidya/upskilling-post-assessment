@@ -1,42 +1,21 @@
-import {
-  condition,
-  defineQuery,
-  defineSignal,
-  setHandler,
-} from "@temporalio/workflow";
-import type { DemoStatus } from "./types";
+import { condition, defineQuery, defineUpdate, setHandler } from '@temporalio/workflow';
+import { applyCommand, expireDue, initialState, nextDeadline } from './model';
+import type { Command, CommandResult, SalonState } from './types';
 
-// This neutral Workflow exists only to prove that the starter is connected.
-// Replace it with the customer Workflow you design during the assessment.
-export const continueDemo = defineSignal("continueDemo");
-export const getDemoStatus = defineQuery<DemoStatus>("getDemoStatus");
+export const salonState = defineQuery<SalonState>('salonState');
+export const command = defineUpdate<CommandResult, [Command]>('command');
 
-export async function demoWorkflow(requestId: string): Promise<DemoStatus> {
-  let shouldContinue = false;
-  let status: DemoStatus = {
-    requestId,
-    phase: "started",
-    message: "The demo Workflow started.",
-  };
-
-  setHandler(getDemoStatus, () => status);
-  setHandler(continueDemo, () => {
-    shouldContinue = true;
-  });
-
-  status = {
-    ...status,
-    phase: "waiting",
-    message: "The Workflow is durably waiting for a Signal.",
-  };
-
-  await condition(() => shouldContinue);
-
-  status = {
-    ...status,
-    phase: "complete",
-    message: "The Signal arrived and the Workflow completed.",
-  };
-  return status;
+// A single durable coordinator serializes changes across this small salon.
+// No external side effects occur in this Workflow: notices are simulation data.
+export async function salonWorkflow(): Promise<void> {
+  const state = initialState();
+  setHandler(salonState, () => state);
+  setHandler(command, cmd => applyCommand(state, cmd, Date.now()));
+  while (true) {
+    expireDue(state, Date.now());
+    const version = state.version;
+    const deadline = nextDeadline(state);
+    if (deadline === undefined) await condition(() => state.version !== version);
+    else await condition(() => state.version !== version, Math.max(1, deadline - Date.now()));
+  }
 }
-

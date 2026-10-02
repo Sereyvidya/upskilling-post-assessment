@@ -3,3 +3,6 @@ node_modules/
 .DS_Store
 npm-debug.log*
 
+
+# Keep the raw assigned-customer conversation local.
+evidence/discovery/

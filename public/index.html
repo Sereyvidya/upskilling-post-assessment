@@ -1,33 +1,81 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Temporal assessment starter</title>
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <main>
-      <p class="eyebrow">Temporal assessment starter</p>
-      <h1>Your environment is connected.</h1>
-      <p class="intro">
-        This neutral demonstration starts a Workflow, waits durably for a
-        Signal, and then completes. Replace it with the experience your
-        customer needs.
-      </p>
-      <section class="card">
-        <h2 id="phase">Ready</h2>
-        <p id="message">Start the demonstration to verify the setup.</p>
-        <button id="start">Start demo Workflow</button>
-        <button id="continue" hidden>Send continue Signal</button>
-        <p class="request-id" id="request-id"></p>
-      </section>
-      <p class="footer">
-        Inspect the execution at
-        <a href="http://localhost:8233" target="_blank">localhost:8233</a>.
-      </p>
-    </main>
-    <script src="/app.js"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#254c3b">
+  <title>Juniper · The thoughtful waitlist</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Juniper Salon dashboard">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 27V9M16 18C7 17 6 11 7 5c7 0 10 4 9 13ZM16 23c9-1 11-7 10-13-7 0-11 4-10 13Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>juniper<span class="brand-subtitle">SALON &amp; STUDIO</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation"><a href="#openings" class="active">Front desk</a><a href="#waitlist">Waitlist</a><a href="#messages">Messages</a></nav>
+    <div class="staff"><span class="staff-avatar">LC</span><span>Lena &amp; Carla<span class="staff-label">FRONT DESK</span></span></div>
+  </header>
 
+  <div class="prototype-note"><span class="little-dot"></span><strong>Interactive prototype</strong><span class="note-detail">Fictional clients · Simulated texts · Update Square manually</span><button class="text-link" type="button" id="about-button">How it works <span aria-hidden="true">↗</span></button></div>
+
+  <main class="page-shell">
+    <section class="page-heading" aria-labelledby="page-title">
+      <div><p class="eyebrow" id="today-label">YOUR FRONT DESK, A LITTLE CALMER</p><h1 id="page-title">A little space. A new possibility.</h1><p class="page-intro">Fill today’s openings, one thoughtful invitation at a time.</p></div>
+      <button class="button button-primary" id="new-opening-button" type="button"><span aria-hidden="true">＋</span> Add an opening</button>
+    </section>
+
+    <section class="overview" aria-label="Waitlist overview">
+      <div class="overview-intro"><span class="leaf-line" aria-hidden="true">✳</span><div><p class="eyebrow">ROOM FOR A GOOD DAY</p><h2>One offer.<br>One clear answer.</h2><p>Each client gets an exclusive window.<br>No crossed wires. No double promises.</p></div></div>
+      <div class="stat"><span class="stat-number" id="stat-active">—</span><span class="stat-label">Active searches</span><span class="stat-detail">Working in the background</span></div>
+      <div class="stat"><span class="stat-number" id="stat-reserved">—</span><span class="stat-label">Awaiting Square</span><span class="stat-detail">A personal finishing touch</span></div>
+      <div class="stat"><span class="stat-number" id="stat-filled">—</span><span class="stat-label">Confirmed openings</span><span class="stat-detail">Marked updated by staff</span></div>
+    </section>
+
+    <div id="connection-alert" class="connection-alert" role="status" hidden></div>
+    <div class="dashboard-grid">
+      <div class="main-column">
+        <section id="openings" aria-labelledby="openings-heading">
+          <div class="section-heading"><div><p class="eyebrow">THE DAY AHEAD</p><h2 id="openings-heading">Today’s openings <span class="count-badge" id="opening-count">0</span></h2></div><div class="connection-status" id="connection-status"><span class="little-dot"></span>Connecting</div></div>
+          <div class="filter-bar" role="group" aria-label="Filter openings"><button type="button" class="filter active" data-filter="all" aria-pressed="true">All openings</button><button type="button" class="filter" data-filter="active" aria-pressed="false">In progress</button><button type="button" class="filter" data-filter="attention" aria-pressed="false">Needs a hand <span id="attention-count">0</span></button></div>
+          <div id="opening-list" class="opening-list"><div class="empty-state loading-state"><span class="empty-symbol" aria-hidden="true">✳</span><h3>Getting the front desk ready…</h3><p>Loading the salon’s current waitlist and openings.</p></div></div>
+        </section>
+
+        <section id="waitlist" class="waitlist-section" aria-labelledby="waitlist-heading">
+          <div class="section-heading"><div><p class="eyebrow">READY WHEN YOU ARE</p><h2 id="waitlist-heading">The waitlist</h2></div><span class="soft-label" id="client-count">Fictional clients</span></div>
+          <p class="section-description">Matched by service, appointment length, stylist and availability, in the order clients joined.</p>
+          <div class="table-scroll"><table><thead><tr><th scope="col">Client</th><th scope="col">Looking for</th><th scope="col">Stylist</th><th scope="col">Availability</th><th scope="col">Status</th></tr></thead><tbody id="waitlist-body"><tr><td colspan="5">Loading waitlist…</td></tr></tbody></table></div>
+        </section>
+      </div>
+
+      <aside class="side-column" aria-label="Demo controls and message history">
+        <section class="reply-panel" aria-labelledby="reply-heading">
+          <div class="panel-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-1 1V11.5A8.5 8.5 0 0 1 11.5 3 8.5 8.5 0 0 1 20 11.5Z" stroke="currentColor" stroke-width="1.5"/><path d="M7 10h9M7 14h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <span class="demo-tag">SIMULATED CLIENT</span><h2 id="reply-heading">On the other end<br>of the text.</h2><p>Try a client’s reply and watch the front desk update. Earlier offers stay here to test late replies.</p>
+          <label class="field-label" for="reply-offer">Reply to an offer</label><select id="reply-offer" disabled><option value="">Create an opening to begin</option></select>
+          <div id="reply-context" class="reply-context">No offers yet. Add an opening to invite the first eligible client.</div>
+          <div class="reply-buttons"><button class="button button-primary" type="button" data-reply="accept" disabled>Accept offer <span aria-hidden="true">✓</span></button><button class="button button-secondary" type="button" data-reply="decline" disabled>Decline</button></div>
+          <details class="more-replies"><summary>Other client responses</summary><label class="field-label" for="question-text">Ask a question</label><textarea id="question-text" rows="2" placeholder="Could I arrive ten minutes later?" maxlength="240"></textarea><button class="button button-secondary full-width" type="button" data-reply="question" disabled>Send question</button><button class="button button-text danger" type="button" data-reply="stop" disabled>Reply STOP · Leave the waitlist</button><p class="field-help">Questions never reserve a slot or extend its deadline. STOP opts this client out of future offers.</p></details>
+          <div id="reply-result" class="reply-result" role="status" hidden></div>
+        </section>
+
+        <section id="messages" class="messages-panel" aria-labelledby="messages-heading"><div class="section-heading compact"><h2 id="messages-heading">Message journal</h2><span class="demo-tag muted">SIMULATED</span></div><p class="section-description">Invitations, client confirmations and front-desk updates. No real messages are sent.</p><div id="message-list" class="message-list"><p class="quiet-empty">Your first invitation will appear here.</p></div></section>
+      </aside>
+    </div>
+
+    <footer class="page-footer"><span class="brand-footer">juniper</span><p>Thoughtful scheduling. A human touch.</p><span>Local prototype · No live Square or SMS connection</span></footer>
+  </main>
+
+  <dialog id="opening-dialog" aria-labelledby="opening-dialog-title"><form id="opening-form"><div class="dialog-heading"><div><p class="eyebrow">MAKE AN INVITATION</p><h2 id="opening-dialog-title">Add today’s opening</h2></div><button class="close-button" type="button" data-close aria-label="Close dialog">×</button></div><p class="dialog-intro">We’ll invite the earliest eligible client and give them an exclusive chance to say yes.</p>
+    <div class="form-row"><div><label class="field-label" for="opening-service">Service</label><select id="opening-service" name="service"><option>Haircut</option><option>Color</option></select></div><div><label class="field-label" for="opening-stylist">Stylist</label><select id="opening-stylist" name="stylist"><option>Maya</option><option>Jo</option></select></div></div>
+    <div class="form-row"><div><label class="field-label" for="opening-start">Appointment date &amp; time</label><input id="opening-start" name="startsAt" type="datetime-local" required></div><div><label class="field-label" for="opening-duration">Available appointment length</label><select id="opening-duration" name="duration"><option value="30">30 minutes</option><option value="60" selected>60 minutes</option><option value="90">90 minutes</option></select></div></div>
+    <fieldset class="mode-fieldset"><legend class="field-label">Offer window</legend><label class="radio-card"><input type="radio" name="mode" value="standard"><span><strong>15 minutes</strong><small>The agreed salon policy</small></span></label><label class="radio-card"><input type="radio" name="mode" value="demo" checked><span><strong>20-second demo</strong><small>See automatic progression quickly</small></span><span class="demo-tag">DEMO</span></label></fieldset>
+    <label class="checkbox-row"><input id="opening-failure" name="failDelivery" type="checkbox"><span>Simulate a delivery failure on the first offer<small>The search pauses for staff to retry, skip or stop.</small></span></label><p class="field-help">Same-day openings only. Appointment times and availability use this device’s local time. Appointment start ends the search.</p><div id="create-error" class="form-error" role="alert" hidden></div><div class="dialog-actions"><button class="button button-secondary" type="button" data-close>Cancel</button><button class="button button-primary" id="create-button" type="submit">Start inviting <span aria-hidden="true">↗</span></button></div></form></dialog>
+
+  <dialog id="staff-dialog" aria-labelledby="staff-dialog-title"><form id="staff-form"><div class="dialog-heading"><h2 id="staff-dialog-title">Record phone booking</h2><button class="close-button" type="button" data-close aria-label="Close dialog">×</button></div><p id="staff-dialog-description" class="dialog-intro"></p><label class="field-label" id="staff-reason-label" for="staff-reason">Client name</label><input id="staff-reason" type="text" maxlength="160" required><label class="checkbox-row square-attestation" id="square-attestation-row" hidden><input id="square-attestation" type="checkbox"><span>I have already recorded this phone booking in Square.<small>This confirms the opening is filled and cancels the outstanding invitation.</small></span></label><div id="staff-error" class="form-error" role="alert" hidden></div><div class="dialog-actions"><button class="button button-secondary" type="button" data-close>Go back</button><button class="button button-primary" id="staff-submit" type="submit">Record booking</button></div></form></dialog>
+
+  <dialog id="about-dialog" aria-labelledby="about-dialog-title"><div class="dialog-heading"><div><p class="eyebrow">A NOTE ABOUT THIS PROTOTYPE</p><h2 id="about-dialog-title">Built around a promise.</h2></div><button class="close-button" type="button" data-close aria-label="Close dialog">×</button></div><div class="about-copy"><p>One exclusive offer at a time. The salon’s normal offer window is <strong>15 minutes</strong>. The clearly marked <strong>20-second demo</strong> makes the sequence easier to see.</p><p>Clients are fictional and every text is simulated. Accepting holds an opening; staff still need to update Square and then mark it confirmed here, including moving any existing later appointment.</p><p>Questions do not extend a deadline. Failed delivery pauses the search for a person to retry, skip or stop. Phone bookings cancel outstanding offers. Late replies cannot take a slot.</p><p>Search state and deadlines are held by a Temporal workflow, so reloading this page doesn’t restart an offer. This is a local prototype, with no public deployment or real customer data.</p></div><button class="button button-primary full-width" type="button" data-close>Back to the front desk</button></dialog>
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

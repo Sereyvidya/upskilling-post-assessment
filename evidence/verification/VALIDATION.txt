@@ -1,0 +1,18 @@
+Juniper prototype validation — October 2, 2026
+
+Automated checks:
+- npm test: 10 passed, 0 failed (nine real Temporal time-skipping integration tests and one exact-deadline state-transition check).
+- npm run typecheck: passed.
+- git diff --check: passed before final documentation/evidence changes.
+
+Manual checks performed against the locally running application:
+- Browser: created a standard 15-minute offer, accepted as Amara, observed the Square-pending hold, then marked Square updated.
+- Browser: simulated failed delivery for Cleo, retried successfully with a fresh offer identity, and rejected acceptance through the old cancelled offer.
+- Browser: reloaded and observed the same active offer and original deadline.
+- Browser: recorded Jordan (demo) as a phone booking with explicit Square-update confirmation; the cancelled client offer could not claim that opening afterward.
+- Browser: created a further standard offer for Ben. Saved the dashboard and Temporal UI screenshots.
+- API/Worker process restart: created the recovery-check opening in 20-second demo mode, stopped the API and Worker while retaining Temporal, then restarted. The first deadline remained unchanged; overdue expiry advanced to Eva, whose later expiry left the opening unfilled. Before/after JSON is saved beside this file.
+- Browser console inspection at the end returned no captured error or warning entries.
+
+Scope of evidence:
+The UI is a local prototype. No real text messages were sent and no actual Square records were changed. Tests do not establish production security, multi-timezone correctness, SMS-provider behavior, improved salon fill rate, or availability while the API and Worker are stopped. Standard offers last 15 minutes; 20 seconds is an explicitly labelled demonstration mode.

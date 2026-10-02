@@ -1,0 +1,39 @@
+{
+  "type": "create",
+  "id": "recovery-check",
+  "service": "Color",
+  "stylist": "Jo",
+  "duration": 60,
+  "startsAt": 1790983320000,
+  "localTime": "16:22",
+  "mode": "demo",
+  "failDelivery": false,
+  "status": "offering",
+  "candidates": [
+    "c4",
+    "c5"
+  ],
+  "offers": [
+    {
+      "id": "recovery-check-offer-1",
+      "clientId": "c4",
+      "clientName": "Dev",
+      "createdAt": 1790979745968,
+      "deadline": 1790979765968,
+      "status": "pending"
+    }
+  ],
+  "failureNext": false,
+  "createdAt": 1790979745968,
+  "history": [
+    {
+      "at": 1790979745968,
+      "message": "Accelerated demo (20 seconds) search created. 2 eligible clients."
+    },
+    {
+      "at": 1790979745968,
+      "message": "Exclusive offer sent to Dev."
+    }
+  ],
+  "currentOfferId": "recovery-check-offer-1"
+}
